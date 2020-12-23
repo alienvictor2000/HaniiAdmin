@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style="text-align:center;color:crimson">Quản lý bài viết</h1>
+<a onclick="AddEditBaiViet(0)" class="btn btn-info" data-toggle="modal"><i class="fas fa-plus-circle"></i> Thêm bài viết</a>
+<hr>
+@*<button class="btn btn-success" asp-action="AddDanhMuc" asp-controller="DanhMuc" data-toggle="modal" data-target="#addModal" id="ConfirmAdd()">  Thêm danh mục </button>
+    <div>*@
+<table id="myTable" class="display" style="width:100%">
+    <thead>
+        <tr style="color:crimson">
+            <th>STT</th>
+            <th>Tên bài viết</th>
+            <th>Hình ảnh</th>
+            <th style="width: 70%;">Nội dung</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Articles)
+        {
+
+        <tr id="row_@item.Id">
+            <td>@item.Id</td>
+            <td>@item.A_name</td>
+            <td><img style="width: 100px;" src="@("~/img/"+ item.A_avatar)" asp-append-version="true" style="height:120px" /></td>
+            <td>@item.A_content</td>
+            <td>
+                <a href="#" onclick="AddEditBaiViet(@item.Id)" class=" btn btn-dark" data-toggle="modal"><i class="far fa-edit"></i> Chỉnh sửa</a>
+                <a href="#" onclick="ConfirmDelete(@item.Id)" class=" btn btn-danger" data-toggle="modal"><i class="far fa-trash-alt"></i> Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<input type="hidden" id="hiddenId" />
+@*@-------------Modal Add Bai Viet----------------*@
+
+<div id="AddBaiVietModal" class=" modal fade">
+    <div class=" modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm/Sửa bài viết</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*------------Modal xoa bai viet---------------*@
+<div class=" modal fade" id="deleteModal">
+    <div class=" modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" style="text-align:center;color:crimson;">Xóa bài viết </h3>
+                <a href="#" class="close" data-dismiss="modal" style="text-align:end">&times;</a>
+            </div>
+
+            <div class=" modal-body">
+                <h4> Bạn có muốn xóa bài viết này không?</h4>
+
+                <div style="text-align:center;display:none" id="loaderDiv1">
+                    <img src="~/img/200.webp" width="150">
+                </div>
+
+                <div class=" modal-footer">
+                    <a href="#" class="btn btn-danger" data-dismiss="modal"> Hủy</a>
+                    <a href="#" class="btn btn-success" onclick="XoaSanPham()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+    var ConfirmDelete = function (Id) {
+        $("#hiddenId").val(Id);
+        $("#deleteModal").modal('show');
+    }
+    var XoaSanPham = function () {
+        $("#loaderDiv1").show();
+        var Id = $("#hiddenId").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/BaiViet/DeleteArticle",
+            data: { id: Id },
+            success: function (result) {
+                $("#loaderDiv1").hide();
+                $("#deleteModal").modal("hide");
+                $("#row_" + Id).remove();
+                Notiflix.Notify.Success('Xóa thành công');
+            }
+        })
+    }
+
+        var AddEditBaiViet = function (id) {
+            var url = "/BaiViet/AddEditArticle?Id=" + id;
+        $("#myModalBodyDiv1").load(url, function () {
+            $("#AddBaiVietModal").modal("show")
+        })
+    }
+    </script>
+}
+

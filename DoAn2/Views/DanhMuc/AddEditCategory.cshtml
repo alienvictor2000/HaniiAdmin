@@ -1,0 +1,40 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@ 
+@model DoAn2.Models.Category;
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(m => m.Id)
+        <label>Tên danh mục</label><br/>
+        @Html.TextBoxFor(model => model.C_name, new { @class = "form-control" })
+            
+    </form>
+    <div class=" modal-footer">
+        <a href="#" id="btnSubmit1" class="btn btn-success">Update</a>
+        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+    </div>
+    <div style="text-align:center;display:none" id="loaderDiv">
+        <img src="~/img/200.webp" width="150">
+    </div>
+</div>
+
+    <script>    
+        $("#btnSubmit1").click(function () {
+            $("#loaderDiv").show();
+
+            var mydata = $("#myForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/DanhMuc/Index",
+                data: mydata,
+                success: function () {
+                    $("#loaderDiv").hide();
+                    $("#editDanhMucModal").modal("hide");
+                    window.location.href = "/DanhMuc/Index";
+                    Notiflix.Notify.Success('Sửa thành công');
+                }
+            })
+        })
+    </script>
+

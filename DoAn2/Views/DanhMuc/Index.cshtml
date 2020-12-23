@@ -1,0 +1,185 @@
+﻿@model DoAn2.Models.Category;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+      @using DoAn2.Models
+
+    <!--<script type="text/javascript">
+     
+    $(document).ready(function () {
+        $('[data-togle="tooltip"]').tooltip();
+        $('table .Delete').on('click', function () {
+            var id = $(this).parent().find('.id').val();
+            alert(id);-->
+           @* $('#deleteDanhMucModal #id').val(id);*@
+        <!--});
+        $('table .edit').on('click', function () {
+            var id = $(this).parent().find('.id').val();
+            alert(id);-->
+            @* $('#deleteDanhMucModal #id').val(id);*@
+        <!--});
+    });
+    </script>-->
+<h1 style="text-align:center;color:crimson">Quản lý danh mục</h1>
+<a href="#addDanhMucModal" class="btn btn-info" data-toggle="modal"><i class="fas fa-plus-circle"></i> Thêm danh mục</a>
+<hr>
+@*<button class="btn btn-success" asp-action="AddDanhMuc" asp-controller="DanhMuc" data-toggle="modal" data-target="#addModal" id="ConfirmAdd()">  Thêm danh mục </button>
+    <div>*@
+<table id="myTable" class="display" style="width:100%">
+    <thead>
+        <tr style="color:crimson">
+            <th>STT</th>
+            <th>Tên danh mục</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Categories)
+        {
+            <tr id="row_@item.Id">
+                <td>@item.Id</td>
+                <td>@item.C_name</td>
+                <td>
+                    <a href="#" onclick ="editDanhMuc(@item.Id)" class=" btn btn-dark" data-toggle="modal"><i class="far fa-edit"></i> Chỉnh sửa</a>
+                    <a href="#" onclick="ConfirmDelete(@item.Id)" class=" btn btn-danger" data-toggle="modal"><i class="far fa-trash-alt"></i> Xóa</a>
+                    @* <input type="hidden" class="id" value="@item.id">*@
+                </td>
+
+                @*  <td>
+                        <a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.id)"
+                           data-target="#deleteModal" data-toggle="modal">Delete</a>
+                        <a href="#" class="btn" style="background-color:aqua" onclick="ConfirmEdit(@item.id)"
+                           data-target="#deleteModal" data-toggle="modal">Chỉnh Sửa</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<input type="hidden" id="hiddenId" />
+@*   ----------------------------------------- Xoa danh muc ------------------------------*@
+<div class=" modal fade" id="deleteModal">
+    <div class=" modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" style="text-align:center;color:crimson;">Xóa danh mục </h3>
+                <a href="#" class="close" data-dismiss="modal" style="text-align:end">&times;</a>
+            </div>
+
+            <div class=" modal-body">
+                <h4> Bạn có muốn xóa danh mục này không?</h4>
+
+                <div style="text-align:center;display:none" id="loaderDiv1">
+                    <img src="~/img/200.webp" width="150">
+                </div>
+
+                <div class=" modal-footer">
+                    <a href="#" class="btn btn-danger" data-dismiss="modal"> Hủy</a>
+                    <a href="#" class="btn btn-success" onclick="XoaDanhMuc()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*  Add Modal HTML*@
+<div id="addDanhMucModal" class=" modal fade">
+    <div class=" modal-dialog">
+        <div class=" modal-content">
+            <form merhod="post" asp-controller="DanhMuc" asp-action="create">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm danh mục</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên Danh Mục</label>
+                        <input type="text" class="form-control" required="required" name="C_name">
+                    </div>
+
+                    <div class=" modal-footer">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel" />
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+@*Delete Modal *@
+
+<div id="deleteDanhMucModal" class=" modal fade">
+    <div class=" modal-dialog">
+        <div class=" modal-content">
+            <form merhod="post" asp-controller="DanhMuc" asp-action="remove">
+                <div class="modal-header">
+                    <h4 class="modal-title">Xóa danh mục</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc muốn xóa danh mục này không? </p>
+
+                    <div class=" modal-footer">
+                        <input type="button" class="btn btn-success" data-dismiss="modal" value="Cancel" />
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                        <input type="hidden" id="id" name="id">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+@*Edit modal*@
+<div id="editDanhMucModal" class=" modal fade">
+    <div class=" modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa danh mục</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+       
+        var ConfirmDelete = function (Id) {
+            $("#hiddenId").val(Id);
+            $("#deleteModal").modal('show');
+        }
+        var XoaDanhMuc = function () {
+            $("#loaderDiv1").show();
+            var Id = $("#hiddenId").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/DanhMuc/DeleteCategory",
+                data: { id: Id },
+                success: function (result) {
+                    console.log("lam dc roi");
+                    $("#loaderDiv1").hide();
+                    $("#deleteModal").modal("hide");
+                    $("#row_" + Id).remove();
+                    Notiflix.Notify.Success('Xóa thành công');
+                }
+            })
+        }
+
+        var editDanhMuc = function (id) {
+
+            var url = "/DanhMuc/AddEditCategory?Id=" + id;
+            $("#myModalBodyDiv1").load(url, function () {
+                $("#editDanhMucModal").modal("show")
+            })
+        }
+    </script>

@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model DoAn2.Models.Product;
+<div>
+    <form id="myForm" asp-action="EditProduct" enctype="multipart/form-data">
+        @Html.HiddenFor(m => m.Id)
+        <label>Tên danh mục</label><br />
+        @Html.DropDownListFor(model => model.Pro_category_id, ViewBag.CategoryList as SelectList, "*Chọn danh mục", new { @class = "form-control", @required = "required" })
+        <label>Tên Sản Phẩm</label><br />
+        @Html.TextBoxFor(model => model.Pro_name, new { @class = "form-control", @required = "required" })
+        <label>Mô tả Sản Phẩm</label><br />
+        @Html.TextBoxFor(model => model.Pro_description, new { @class = "form-control", @required = "required" })
+        <label>Hình ảnh </label><br />
+        @Html.TextBoxFor(model => model.Pro_avatar_file, new { @type = "file", @required = "required" })
+        <br />
+        <label>Giá </label><br />
+        @Html.TextBoxFor(model => model.Pro_price, new { @class = "form-control", @required = "required" })
+        <div class=" modal-footer">
+            <input type="submit" class="btn btn-success" value="Lưu" />
+
+            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Hủy" />
+        </div>
+    </form>
+   
+    <div style="text-align:center;display:none" id="loaderDiv1">
+        <img src="~/img/200.webp" width="150">
+    </div>
+</div>
+
+@*<script>
+    $("#btnSubmit1").click(function () {
+        $("#loaderDiv1").show();
+
+        var mydata = $("#myForm").serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/SanPham/Index",
+            data: mydata,
+            success: function () {
+                $("#loaderDiv1").hide();
+                $("#AddSanPhamModal").modal("hide");
+                window.location.href = "/SanPham/Index";
+                Notiflix.Notify.Success('Thao tác thành công');
+            }
+        });
+    });
+</script>*@
+    

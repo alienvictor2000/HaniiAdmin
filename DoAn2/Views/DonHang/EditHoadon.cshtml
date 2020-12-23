@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model DoAn2.Models.Transaction;
+<div>
+    <form id="myForm">
+
+        @Html.HiddenFor(m => m.Id)
+        <label>Họ tên: </label>
+        @Html.DisplayFor(model => model.Tr_name, new { @class = "form-control" })</br>
+        <label>Số điện thoại:  </label>
+        @Html.DisplayFor(model => model.Tr_phone, new { @class = "form-control" })</br>
+        <label>Địa chỉ:  </label>
+        @Html.DisplayFor(model => model.Tr_address, new { @class = "form-control" })</br>
+        <label>Tổng tiền:  </label>
+        @Html.DisplayFor(model => model.Tr_total, new { @class = "form-control" })</br>
+        <label>Ghi chú:  </label>
+        @Html.DisplayFor(model => model.Tr_note, new { @class = "form-control" })</br>
+        <label>Trạng thái:  </label>
+        @Html.DisplayFor(model => model.Tr_status, new { @class = "form-control" })</br>
+        <div class=" modal-footer">
+            <a href="#" id="btnSubmit1" class="btn btn-success">Xác nhận</a>
+            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Hủy" />
+        </div>
+    </form>
+
+    <div style="text-align:center;display:none" id="loaderDiv1">
+        <img src="~/img/200.webp" width="150">
+    </div>
+</div>
+<script>
+    $("#btnSubmit1").click(function () {
+        $("#loaderDiv1").show();
+
+        var mydata = $("#myForm").serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/DonHang/Duyet",
+            data: mydata,
+            success: function () {
+                $("#loaderDiv1").hide();
+                $("#passHoadonModal").modal("hide");
+                window.location.href = "/DonHang/Duyet";
+                Notiflix.Notify.Success('Thao tác thành công');
+            }
+        });
+    });
+</script>

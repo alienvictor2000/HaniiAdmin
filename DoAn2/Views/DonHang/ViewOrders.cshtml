@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<script>
+    $(function () {
+        $('a[name="print"]').click(function () {
+            var pageTitle = 'Hóa dơn đặt hàng',
+                stylesheet = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css',
+                win = window.open('', 'Print', 'width=900,height=600');
+            win.document.write('<html><head><title>' + pageTitle + '</title>' +
+                '<link rel="stylesheet" href="' + stylesheet + '">' +
+                '</head><body>' + $('.table')[0].outerHTML + '</body></html>');
+            win.document.close();
+            win.print();
+            return false;
+        });
+    });
+</script>
+<a class="btn-ttmh" name="print" style="color: #5666a5;">In hóa đơn</a>
+<table class="table" id="myTable" class="display" style="width:100%">
+    <thead>
+        <tr style="color:crimson">
+            <th>STT</th>
+            <th>Mã đơn hàng</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Orders)
+        {
+            <tr id="row_@item.Id">
+                <td>@item.Id</td>
+                <td>@item.Or_transaction_id</td>
+                <td>@item.Or_product_name</td>
+                <td>@item.Or_qty</td>
+                <td>@item.Or_price</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />  
+@foreach (var item in @ViewBag.totalPrice)
+{
+  <h3><span style="float: left;">Tổng tiền</span><b><span style="float: right; margin-right: 100px;">@item</span></b></h3>
+}

@@ -1,0 +1,22 @@
+﻿@model DoAn2.Models.Article;
+<div>
+    <form id="myForm" asp-action="EditArticle" enctype="multipart/form-data">
+        @Html.HiddenFor(m => m.Id)
+        <label>Tên bài viết</label><br />
+        @Html.TextBoxFor(model => model.A_name, new { @class = "form-control", @required = "required" })
+        <label>Nội dung</label><br />
+        @Html.TextAreaFor(model => model.A_content, new { @class = "form-control", @required = "required" })@**@
+        <label>Hình ảnh </label><br />
+        @Html.TextBoxFor(model => model.A_avatar_file, new { @type = "file" })
+        <div class=" modal-footer">
+            <input type="submit" class="btn btn-success" value="Lưu" />
+
+            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Hủy" />
+        </div>
+    </form>
+
+    <div style="text-align:center;display:none" id="loaderDiv1">
+        <img src="~/img/200.webp" width="150">
+    </div>
+</div>
+
